@@ -13,7 +13,8 @@ param(
 # needs to be put at the beginning of the script. otherwise they are not working
 [switch] $full , # pass command line switches to the script. the switch can be verified with if ($full)
 [switch] $s, 
-[string] $p = $env:USERPROFILE   #pass a string to the $p variable otherwise set $p to the users default profile for checking
+[string] $p = $env:USERPROFILE ,   #pass a string to the $p variable otherwise set $p to the users default profile for checking
+[int]$m = 50 #pass a integer to the $m variale. otherwise $m 50 which returns all file dirctories with size greater than 50 mb
 )
 
 
@@ -38,7 +39,7 @@ if ($full)
 	    $InSize = $(get-childitem $i.FullName -Recurse | Measure-Object -Property length -Sum).Sum
 
     # Compare InSize and if its size is geater or equal to 50 MB display it
-	    if ($InSize/1MB -ge 50)
+	    if ($InSize/1MB -ge $m)
 		    {
 			    $i.fullname
                 get-childitem -path $i.fullname -Recurse
@@ -57,7 +58,7 @@ else
 	    $InSize = $(get-childitem $i.FullName -Recurse | Measure-Object -Property length -Sum).Sum
 
         # Compare InSize and if its size is geater or equal to 50 MB display it
-	    if ($InSize/1MB -ge 50)
+	    if ($InSize/1MB -ge $m)
 		    {
 			    $i.fullname
 			    # get each object even if it is just a file
